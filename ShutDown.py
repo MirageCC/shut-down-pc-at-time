@@ -11,7 +11,7 @@ from PyQt4.QtGui import *
 from PyQt4.QtGui import QDialog,QFrame,QLabel,QLineEdit,QPushButton,QLCDNumber,QWidget
 from PyQt4.QtGui import QApplication
 from PyQt4.QtCore import QTimer,QTime,SIGNAL
-import sys
+import sys,os
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
