@@ -65,8 +65,8 @@ class Ui_Dialog(object):
         self.EndTime.setGeometry(QtCore.QRect(280, 0, 131, 71))
         self.EndTime.setAutoFillBackground(False)
         self.EndTime.setStyleSheet(_fromUtf8("color:rgb(255, 0, 127)"))
-        self.EndTime.setNumDigits(4)
-        self.EndTime.setDigitCount(4)
+        self.EndTime.setNumDigits(5)
+        self.EndTime.setDigitCount(5)
         self.EndTime.setSegmentStyle(QtGui.QLCDNumber.Flat)
         self.EndTime.setProperty("value", 0.0)
         self.EndTime.setObjectName(_fromUtf8("EndTime"))
@@ -94,9 +94,9 @@ class Ui_Dialog(object):
         self.CreateTask.setObjectName(_fromUtf8("CreateTask"))
 
         self.retranslateUi(Dialog)
+
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
-        Dialog.connect(self.CreateTask,SIGNAL("clicked()"),self.createTask)
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "Dialog", None))
@@ -107,38 +107,55 @@ class Ui_Dialog(object):
         self.label_5.setText(_translate("Dialog", "设定时间:", None))
         self.CreateTask.setText(_translate("Dialog", "确  认", None))
 
+
+class MyFrame(QDialog,Ui_Dialog):
+    def __init__(self,parent=None):
+        super(MyFrame,self).__init__(parent)
+        self.setupUi(self)
+        self.init()
+        self.connect(self.CreateTask,SIGNAL("clicked()"),self.createTask)
+
+
+    def init(self):
+        self.timerShow = QtCore.QTimer()
+        self.timerShow.timeout.connect(self.showTime)
+        self.timerShow.start(1000)
+
     def createTask(self):
         hours = int(self.LastHourEdit.text())
         minutes = int(self.LastMinuteEdit.text())
         self.ShutTimeHour = hours
         self.ShutTimeMinute = minutes
-##        time = QTime.currentTime()
-##        
-##        self.ShutTimeHour = (time.hour()+ hours)%24
-##        if minutes>=60:
-##            self.ShutTimeHour+=1
-##        self.ShutTimeMinute=(time.minute()+minutes)%60
+
+        time = QTime.currentTime()
         
+        self.ShutTimeHour = (time.hour()+ hours)%24
+        if minutes>=60:
+            self.ShutTimeHour+=1
+        self.ShutTimeMinute=(time.minute()+minutes)%60
         
-        self.timer = QTimer()
-        self.timer.timeout.connect(self.showTime)
-        self.timer.start(1000)
+        self.timerShutDown = QTimer()
+        self.timerShutDown.timeout.connect(self.cycle)
+        self.timerShutDown.start(1000)
         self.CreateTask.setEnabled(False)
+        if self.ShutTimeHour>=10:
+            strHour = str(self.ShutTimeHour)
+        else:
+            strHour = '0'+"%s"%self.ShutTimeHour
 
-        text = "%s:%s"%(self.ShutTimeHour,self.ShutTimeMinute)
-
-        self.EndTime.display("%s"%text)        
-
-
+        if self.ShutTimeMinute>=10:
+            strMinute = str(self.ShutTimeMinute)
+        else:
+            strMinute = '0'+"%s"%self.ShutTimeMinute        
+        
+        text = "%s:%s"%(strHour,strMinute  )
+        self.EndTime.display("%s"%text)
 
     def cycle(self):
         timer = QTime.currentTime()
         if timer.hour()==self.ShutTimeHour and timer.minute()==self.ShutTimeMinute:
             os.system('shutdown -s -f -t 1')
-            #print('ok')
-
-        
-            
+            #print('shut down')
 
     def showTime(self):
         
@@ -150,15 +167,60 @@ class Ui_Dialog(object):
             text = text[:2] + ' ' + text[3:]
 
         self.NowTime.display("%s"%text)
-        self.cycle()
 
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    Form = QtGui.QWidget()
-    widget = Ui_Dialog()
-    widget.setupUi(Form)
-    Form.show()
-    sys.exit(app.exec_())
+if __name__=="__main__":
+    app=QApplication(sys.argv)  
+    dialog=MyFrame()
+    dialog.show()    
+    app.exec_()       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
