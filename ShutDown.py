@@ -80,12 +80,16 @@ class Ui_Dialog(object):
         self.LastHourEdit.setObjectName(_fromUtf8("LastHourEdit"))
         self.LastHourEdit.setMaximum(23)
         self.LastHourEdit.setMinimum(0)
+        self.LastHourEdit.setMinimum(0)
+        self.LastHourEdit.setWrapping(True)
         
         self.LastMinuteEdit = QtGui.QSpinBox(Dialog)
         self.LastMinuteEdit.setGeometry(QtCore.QRect(192, 85, 41, 21))
         self.LastMinuteEdit.setObjectName(_fromUtf8("LastHourEdit"))
         self.LastMinuteEdit.setMaximum(59)
         self.LastMinuteEdit.setMinimum(0)        
+        self.LastMinuteEdit.setMinimum(0)
+        self.LastMinuteEdit.setWrapping(True)
         
         self.CreateTask = QtGui.QPushButton(Dialog)
         self.CreateTask.setGeometry(QtCore.QRect(240, 80, 91, 28))
