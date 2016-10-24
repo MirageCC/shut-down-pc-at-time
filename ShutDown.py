@@ -156,6 +156,8 @@ class MyFrame(QDialog,Ui_Dialog):
     def cycle(self):
         timer = QTime.currentTime()
         if timer.hour()==self.ShutTimeHour and timer.minute()==self.ShutTimeMinute:
+            self.timerShow.stop()
+            self.timerShutDown.stop()
             os.system('shutdown -s -f -t 1')
             #print('shut down')
 
