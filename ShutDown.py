@@ -75,11 +75,20 @@ class Ui_Dialog(object):
         self.label_5.setStyleSheet(_fromUtf8("font: 12pt \"微软雅黑\";\n"
 "color:rgb(85, 170, 0)"))
         self.label_5.setObjectName(_fromUtf8("label_5"))
-        self.LastHourEdit = QtGui.QLineEdit(Dialog)
-        self.LastHourEdit.setGeometry(QtCore.QRect(150, 85, 31, 21))
+        self.LastHourEdit = QtGui.QSpinBox(Dialog)
+        self.LastHourEdit.setGeometry(QtCore.QRect(150, 85, 41, 21))
         self.LastHourEdit.setObjectName(_fromUtf8("LastHourEdit"))
+        self.LastHourEdit.setMaximum(23)
+        self.LastHourEdit.setMinimum(0)
+        
+        self.LastMinuteEdit = QtGui.QSpinBox(Dialog)
+        self.LastMinuteEdit.setGeometry(QtCore.QRect(192, 85, 41, 21))
+        self.LastMinuteEdit.setObjectName(_fromUtf8("LastHourEdit"))
+        self.LastMinuteEdit.setMaximum(59)
+        self.LastMinuteEdit.setMinimum(0)        
+        
         self.CreateTask = QtGui.QPushButton(Dialog)
-        self.CreateTask.setGeometry(QtCore.QRect(200, 80, 91, 28))
+        self.CreateTask.setGeometry(QtCore.QRect(240, 80, 91, 28))
         self.CreateTask.setStyleSheet(_fromUtf8("font: 75 11pt \"微软雅黑\";\n"
 "color:rgb(170, 0, 255)"))
         self.CreateTask.setObjectName(_fromUtf8("CreateTask"))
@@ -95,15 +104,20 @@ class Ui_Dialog(object):
         self.label_2.setText(_translate("Dialog", "时间", None))
         self.label_3.setText(_translate("Dialog", "关机", None))
         self.label_4.setText(_translate("Dialog", "时间", None))
-        self.label_5.setText(_translate("Dialog", "倒计时:", None))
+        self.label_5.setText(_translate("Dialog", "设定时间:", None))
         self.CreateTask.setText(_translate("Dialog", "确  认", None))
 
     def createTask(self):
         hours = int(self.LastHourEdit.text())
-        time = QTime.currentTime()
-        
-        self.ShutTimeHour = (time.hour()+ hours)%24
-        self.ShutTimeMinute=time.minute()
+        minutes = int(self.LastMinuteEdit.text())
+        self.ShutTimeHour = hours
+        self.ShutTimeMinute = minutes
+##        time = QTime.currentTime()
+##        
+##        self.ShutTimeHour = (time.hour()+ hours)%24
+##        if minutes>=60:
+##            self.ShutTimeHour+=1
+##        self.ShutTimeMinute=(time.minute()+minutes)%60
         
         
         self.timer = QTimer()
@@ -113,7 +127,7 @@ class Ui_Dialog(object):
 
         text = "%s:%s"%(self.ShutTimeHour,self.ShutTimeMinute)
 
-        self.EndTime.display("当前时间:%s"%text)        
+        self.EndTime.display("%s"%text)        
 
 
 
@@ -121,6 +135,7 @@ class Ui_Dialog(object):
         timer = QTime.currentTime()
         if timer.hour()==self.ShutTimeHour and timer.minute()==self.ShutTimeMinute:
             os.system('shutdown -s -f -t 1')
+            #print('ok')
 
         
             
@@ -134,7 +149,7 @@ class Ui_Dialog(object):
         if timer.second() % 2 == 0:
             text = text[:2] + ' ' + text[3:]
 
-        self.NowTime.display("当前时间:%s"%text)
+        self.NowTime.display("%s"%text)
         self.cycle()
 
 if __name__ == "__main__":
