@@ -11,7 +11,7 @@ from PyQt4.QtGui import *
 from PyQt4.QtGui import QDialog,QFrame,QLabel,QLineEdit,QPushButton,QLCDNumber,QWidget
 from PyQt4.QtGui import QApplication
 from PyQt4.QtCore import QTimer,QTime,SIGNAL
-import sys,os
+import sys,os,win32process
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -158,7 +158,8 @@ class MyFrame(QDialog,Ui_Dialog):
         if timer.hour()==self.ShutTimeHour and timer.minute()==self.ShutTimeMinute:
             self.timerShow.stop()
             self.timerShutDown.stop()
-            os.system('shutdown -s -f -t 1')
+            #os.system('shutdown -s -f -t 1')
+            handle=win32process.CreateProcess('C:\\Windows\\System32\\shutdown.exe',' /s',None,None,0,win32process.CREATE_NEW_CONSOLE , None , None ,win32process.STARTUPINFO())
             #print('shut down')
 
     def showTime(self):
