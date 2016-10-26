@@ -132,7 +132,7 @@ class MyFrame(QDialog,Ui_Dialog):
         time = QTime.currentTime()
         
         self.ShutTimeHour = (time.hour()+ hours)%24
-        if minutes>=60:
+        if minutes+time.minute()>=60:
             self.ShutTimeHour+=1
         self.ShutTimeMinute=(time.minute()+minutes)%60
         
